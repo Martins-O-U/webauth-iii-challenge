@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {restricted} = require ('../auth/validators')
+const {restricted, generateToken} = require ('../auth/validators')
 const db = require('./user-route-helper')
 const bcrypt = require('bcryptjs')
 
@@ -10,7 +10,7 @@ router.post("/register", (req, res) => {
     const hash = bcrypt.hashSync(user.password, 10);
     user.password = hash;
 
-    db.add(user)
+    db.addUser(user)
         .then(saved => {
             res.status(201).json(saved)
         })
@@ -19,29 +19,32 @@ router.post("/register", (req, res) => {
         })
 })
 
+
 router.post("/login", (req, res) => {
     let { username, password } = req.body;
-
-        db.findBy({ username })
-            .first()
-            .then( user => {
-                if (user && bcrypt.compareSync(password, user.password)) {
-                    req.session.user = user.username;
-                    console.log(req.session);
-                    res.status(200).json({ message: `Welcome, on board ${user.username}`})
-                } else {
-                    res.status(401).json({ message: "Invalid Credential"})
-                }
-            })
-            .catch(error => {
-                res.status(500).json({ message: "Oops!. Something went wrong " + error.message})
-            })        
-
+    if(!username && !password){
+        res.status(400).json({message: "Please Provide username and password"})
+    }else{
+        db.getUsersBY({username}).first()
+        .then(user => {
+            if (user && bcrypt.compareSync(password, user.password)) {
+                const token = generateToken(user);
+                res.status(200).json({
+                    message:`Welcome, on board ${user.username}`, token
+                })
+            } else {
+                res.status(401).json({ message: "invalid credentials" })
+            }
+        })
+        .catch(error => {
+            res.status(500).json({ message: "Oops!, Something went wrong:- " + error.message});
+        })
+    }
 
 })
 
 router.get("/users", restricted, (req, res) => {
-    db.retrieve()
+    db.getUsers()
         .then(users => {
             res.status(200).json(users)
         })
@@ -49,16 +52,5 @@ router.get("/users", restricted, (req, res) => {
             res.status(500).json({ message: "Oops!, Something went wrong. " + error.message})
         })
 })
-
-router.get("/logout", (req, res) => {
-    if (req.session) {
-        req.session.destroy();
-        res.send("See you soon");
-    } else {
-        res.status(401).json({ message: "Not logged in"})
-    }
-
-})
-
 
 module.exports = router; 

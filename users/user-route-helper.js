@@ -20,7 +20,7 @@ function getUsersBY (filter){
 }
 
 function addUser (user) {
-    return db("usersList").insert(user, "id")
+    return db("userList").insert(user, "id")
         .then(ids => {
             const [id] = ids;
             return getUserById(id);
