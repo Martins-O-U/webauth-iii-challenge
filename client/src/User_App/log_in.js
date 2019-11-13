@@ -2,47 +2,43 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Login = props => {
-    const [ returningUser, setReturningUser ] = useState({ username: "", password: ""})
+    const [ User, setUser ] = useState({ username: "", password: ""})
 
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setReturningUser({...returningUser, [name]: value})
-        console.log(returningUser);
+    const handleChange = event => {
+        const { name, value } = event.target;
+        setUser({...User, [name]: value})
     }
 
-    const submitReturningUser = (e, creds) => {
-        e.preventDefault();
-        axios.post("http://localhost:4500/api/login", creds)
+    const UserSubmit = (event, loginInfo) => {
+        event.preventDefault();
+        axios.post("http://localhost:4500/api/login", loginInfo)
             .then(res => {
                 localStorage.setItem("token", res.data.token)
                 props.history.push("/users")
             })
-            .catch(err => {
-                console.log("oops", err)
+            .catch(error => {
+                console.log("Something went wrong", + error.message)
             })
     }
 
     return (
         <div>
-            <h1>Just your friendly neighborhood login page</h1>
-            <form onSubmit={(e) => submitReturningUser(e, returningUser)}>
-                <label>
-                    Username: 
-                    <input 
-                        name="username"
-                        value={returningUser.username}
-                        onChange={handleChange}
-                    />
+            <h1 className='intro'>Welcome to the Login Page</h1>
+            <form onSubmit={(e) => UserSubmit(e, User)}>
+                <h3>Please Enter your Login Details</h3>
+                <div>
+                    <label>
+                        Username: 
+                        <input name="username" value={User.username} onChange={handleChange} />
                     </label>
-                <label>
-                    Password: 
-                    <input 
-                        name="password"
-                        value={returningUser.password}
-                        onChange={handleChange}
-                    />
-                </label>
-                <button>Sign in!</button>
+                </div>
+                <div>
+                    <label>
+                        Password: 
+                        <input name="password" value={User.password} onChange={handleChange} />
+                    </label>
+                </div>
+                <button className='button-submit'>Submit</button>
             </form>
         </div>
     );

@@ -5,15 +5,14 @@ import axios from "axios";
 const SignIn = props => {
     const [ newUser, setNewUser ] = useState({ username: "", password: "", department: ""})
 
-    const handleChange = e => {
-        const {name, value} = e.target;
+    const handleChange = event => {
+        const {name, value} = event.target;
         setNewUser({...newUser, [name]: value})
     }
 
-    const handleSubmit = (e, newb)=> {
-        e.preventDefault();
-        console.log("Yay!!!")
-        axios.post("http://localhost:2468/api/register", newb)
+    const handleSubmit = (event, userInfo)=> {
+        event.preventDefault();
+        axios.post("http://localhost:4500/api/register", userInfo)
             .then(res => {
                 props.history.push("/login")
             })
@@ -21,33 +20,28 @@ const SignIn = props => {
 
     return (
         <div>
-            <h1>Register page</h1>
+            <h1 className='intro'>Welcome to the Sign_Up page</h1>
             <form onSubmit={e => handleSubmit(e, newUser)}>
-                <label> 
-                    Name: 
-                    <input 
-                        name="username"
-                        value={newUser.username}
-                        onChange={handleChange}
-                    />
-                </label>
-                <label>
-                    Password: 
-                    <input 
-                        name="password"
-                        value={newUser.password}
-                        onChange={handleChange}
-                    />
+                <h3>Please Enter your Required Details</h3>
+                <div>
+                    <label> 
+                        UserName: 
+                        <input name="username" value={newUser.username} onChange={handleChange} />
                     </label>
-                <label>
-                    Department: 
-                    <input 
-                        name="department"
-                        value={newUser.department}
-                        onChange={handleChange}
-                    />
+                </div>
+                <div>
+                    <label>
+                        Password: 
+                        <input name="password" value={newUser.password} onChange={handleChange} />
                     </label>
-                <button>Submit</button>
+                </div>
+                <div>
+                    <label>
+                        Department: 
+                        <input name="department" value={newUser.department} onChange={handleChange} />
+                    </label>
+                </div>
+                <button className='button-submit'>Submit</button>
             </form>
         </div>
     );
