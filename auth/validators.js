@@ -25,8 +25,8 @@ function restricted (req, res, next) {
 
 function generateToken(user) {
     const payload = {
-      subject: user.username,
-      id: user.id,
+      subject: user.id,
+      username: user.username,
       department: user.department
     };
     const secret = process.env.JWT_SECRET || "A secret lives here";

@@ -7,8 +7,9 @@ module.exports ={
     addUser
 }
 
-function getUsers(){
-    return db('userList')
+function getUsers() {
+    return db("userList")
+        .select("userList.id", "userList.username", "userList.department")
 }
 
 function getUserById(id){

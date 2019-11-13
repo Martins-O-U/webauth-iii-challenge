@@ -33,7 +33,7 @@ router.post("/login", (req, res) => {
                     message:`Welcome, on board ${user.username}`, token
                 })
             } else {
-                res.status(401).json({ message: "invalid credentials" })
+                res.status(401).json({ message: "You shall not pass!" })
             }
         })
         .catch(error => {
