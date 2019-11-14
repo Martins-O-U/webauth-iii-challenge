@@ -15,7 +15,7 @@ const Nav = () => {
                 <Link to="/users">Users</Link>           
                 <Link to="/login">Log-In</Link>
                 <Link to="/register">Sign_Up</Link>
-                <Link to="/login"><button onClick={onLogout} >Log_Out</button></Link>
+                <Link to="/"><button onClick={onLogout} >Log_Out</button></Link>
             </div>
         </div>
     );
