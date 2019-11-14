@@ -37,7 +37,7 @@ router.post("/login", (req, res) => {
             }
         })
         .catch(error => {
-            res.status(500).json({ message: "Oops!, Something went wrong:- " + error.message});
+            res.status(500).json({ message: "Oops!, Something went wrong:- "+ error.message});
         })
     }
 

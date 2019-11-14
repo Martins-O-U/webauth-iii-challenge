@@ -1,6 +1,7 @@
 .App {
   max-width: 900px;
   margin: 0 auto;
+  padding-bottom: 3%;
   text-align: center;
   background: whitesmoke;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
@@ -32,18 +33,24 @@ input{
 }
 .navbar{
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 5px;
-  color: black
 }
 
 a{
   text-decoration: none;
   margin: 0px 5px;
+  color: black
+}
+
+a:hover{
+  font-size: 18;
+  color: dodgerblue;
 }
 
 .button-submit{
   width: 15%;
+  margin-top: 3px;
   margin-bottom: 2%;
   border-radius: 5px;
   padding: 5px 7px;
@@ -61,4 +68,9 @@ a{
 
  .name{
    margin-right: 10px;
+ }
+
+ .home {
+   margin: 20%;
+   padding-bottom: 5%;
  }
